@@ -1,1 +1,1 @@
-print("ORZEL_1 DEV Sobieradzik")
+print("ORZEL_1 DEV Jo_oh_stud")
