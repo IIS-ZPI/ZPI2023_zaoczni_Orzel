@@ -2,6 +2,10 @@ class ArithmeticAdd:
     def Addition(self, A: float, B: float) -> float:
         return A + B
     
+class ArithmeticDiff:
+    def Difference(self, A: float, B: float) -> float:
+        return A - B
+    
 
 if __name__ == "__main__":
     print("ORZEL_1 devops JoOhStud")
@@ -15,7 +19,9 @@ if __name__ == "__main__":
     B = 5
 
     adder = ArithmeticAdd()
+    diff = ArithmeticDiff()
 
     print("")
     print(f"Arithmetic operations for A={A}, B={B}")
     print(f"A + B: {adder.Addition(A, B)}")
+    print(f"A - B: {diff.Difference(A, B)}")
