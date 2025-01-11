@@ -17,7 +17,7 @@ class ArithmeticsDivImpl:
         except ZeroDivisionError:
             print("Error: Division   by zero is not allowed.")
             return float('inf')
-
+# nice main
 if __name__ == "__main__":
     print("ORZEL_1 devops JoOhStud")
     print("BartStud") # zad5
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # Example usage
     A = 10
     B = 5
-
+    
     adder = ArithmeticAdd()
     diff = ArithmeticDiff()
     multi = ArithmeticMulti()
