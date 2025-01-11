@@ -1,4 +1,4 @@
-class ArithmeticAdd:
+class ArithmeticAdd: # Addition
     def Addition(self, A: float, B: float) -> float:
         return A + B
 
