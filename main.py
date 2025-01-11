@@ -10,10 +10,10 @@ class ArithmeticMulti:
     def Multiplication(self, A: float, B: float) -> float:
         return A * B
 
-class ArithmeticsDivImpl:
+class ArithmeticsDivImpl: # Comment 1 for ex5
     def Division(self, A: float, B: float) -> float:
-        try:
-            return A / B
+        try: # Comment 2 for ex5
+            return A / B # Comment 3 for ex5
         except ZeroDivisionError:
             print("Error: Division   by zero is not allowed.")
             return float('inf')
