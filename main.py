@@ -19,7 +19,6 @@ class ArithmeticsDivImpl:
             return float('inf')
 
 if __name__ == "__main__":
-    #Team Orzel_1
     print("ORZEL_1 devops JoOhStud")
     print("BartStud")
     print("Dutchu")
