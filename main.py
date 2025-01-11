@@ -10,7 +10,7 @@ class ArithmeticMulti:
     def Multiplication(self, A: float, B: float) -> float:
         return A * B
 
-class ArithmeticsDivImpl:
+class ArithmeticsDivImpl: # Comment 1 for ex5
     def Division(self, A: float, B: float) -> float:
         try:
             return A / B
