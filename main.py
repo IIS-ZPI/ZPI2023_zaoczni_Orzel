@@ -34,6 +34,7 @@ if __name__ == "__main__":
     multi = ArithmeticMulti()
     diviser = ArithmeticsDivImpl()
 
+    # Print example
     print("")
     print(f"Arithmetic operations for A={A}, B={B}")
     print(f"A + B: {adder.Addition(A, B)}")
