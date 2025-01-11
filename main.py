@@ -1,4 +1,4 @@
-class ArithmeticAdd:
+class ArithmeticAdd: # Addition
     def Addition(self, A: float, B: float) -> float:
         return A + B
 
@@ -20,7 +20,7 @@ class ArithmeticsDivImpl:
 
 if __name__ == "__main__":
     print("ORZEL_1 devops JoOhStud")
-    print("BartStud")
+    print("BartStud") # zad5
     print("Dutchu")
     print("pterq")
     print("Sebastian Frączak")
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     diviser = ArithmeticsDivImpl()
 
     # Print example
-    print("")
+    print("") # hmm
     print(f"Arithmetic operations for A={A}, B={B}")
     print(f"A + B: {adder.Addition(A, B)}")
     print(f"A - B: {diff.Difference(A, B)}")
