@@ -32,7 +32,7 @@ if __name__ == "__main__":
     adder = ArithmeticAdd()
     diff = ArithmeticDiff() # komentarz po1
     multi = ArithmeticMulti()
-    diviser = ArithmeticsDivImpl() # komentarz zad6
+    diviser = ArithmeticsDivImpl()
 
     # Print example
     print("") # hmm
