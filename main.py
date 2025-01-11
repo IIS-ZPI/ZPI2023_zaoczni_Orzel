@@ -30,7 +30,7 @@ if __name__ == "__main__":
     B = 5
 
     adder = ArithmeticAdd()
-    diff = ArithmeticDiff()
+    diff = ArithmeticDiff() # komentarz po1
     multi = ArithmeticMulti()
     diviser = ArithmeticsDivImpl()
 
