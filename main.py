@@ -42,4 +42,6 @@ if __name__ == "__main__":
     # Multiplication
     print(f"A * B: {multi.Multiplication(A, B)}")
     # Division
-    print(f"A / B: {diviser.Division(A, B)}")
+    print(f"A / B: {diviser.Division(A, B)}") 
+    
+    # komentarz 3
