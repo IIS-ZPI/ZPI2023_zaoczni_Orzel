@@ -22,7 +22,7 @@ if __name__ == "__main__":
     print("ORZEL_1 devops JoOhStud")
     print("BartStud") # zad5
     print("Dutchu")
-    print("pterq")
+    print("pterq") # komentarz 2
     print("Sebastian Frączak")
 
     # Example usage
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     B = 5
 
     adder = ArithmeticAdd()
-    diff = ArithmeticDiff()
+    diff = ArithmeticDiff() # komentarz po1
     multi = ArithmeticMulti()
     diviser = ArithmeticsDivImpl()
 
@@ -42,4 +42,6 @@ if __name__ == "__main__":
     # Multiplication
     print(f"A * B: {multi.Multiplication(A, B)}")
     # Division
-    print(f"A / B: {diviser.Division(A, B)}")
+    print(f"A / B: {diviser.Division(A, B)}") 
+    
+    # komentarz 3
