@@ -22,7 +22,7 @@ if __name__ == "__main__":
     print("ORZEL_1 devops JoOhStud")
     print("BartStud") # zad5
     print("Dutchu")
-    print("pterq")
+    print("pterq") # komentarz 2
     print("Sebastian Frączak")
 
     # Example usage
