@@ -12,7 +12,7 @@ class ArithmeticMulti:
 
 class ArithmeticsDivImpl:
     def Division(self, A: float, B: float) -> float:
-        try:
+        try: # Comment 2 for ex5
             return A / B
         except ZeroDivisionError:
             print("Error: Division   by zero is not allowed.")
