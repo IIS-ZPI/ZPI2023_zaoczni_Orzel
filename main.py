@@ -12,7 +12,10 @@ class ArithmeticMulti:
 
 class ArithmeticsDivImpl: # Comment 1 for ex5
     def Division(self, A: float, B: float) -> float:
+ feature_lab1_zad6_SF
         try: # Comment 2 for ex5
+
+ main
             return A / B # Comment 3 for ex5
         except ZeroDivisionError:
             print("Error: Division   by zero is not allowed.")
@@ -41,9 +44,13 @@ if __name__ == "__main__":
     print(f"A - B: {diff.Difference(A, B)}")
     # Multiplication
     print(f"A * B: {multi.Multiplication(A, B)}")
+ feature_lab1_zad6_SF
     # Division
     print(f"A / B: {diviser.Division(A, B)}") 
     
     # komentarz 3
     #com_SF_3
     #com_zad_6_SF
+
+    print(f"A / B: {diviser.Division(A, B)}")
+> main
