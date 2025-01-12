@@ -28,12 +28,12 @@ if __name__ == "__main__":
     # Example usage
     A = 10
     B = 5
-    #com_1_SF
+    #com_SF_1
     adder = ArithmeticAdd()
     diff = ArithmeticDiff() # komentarz po1
     multi = ArithmeticMulti()
     diviser = ArithmeticsDivImpl()
-    #com_2_SF
+
     # Print example
     print("") # hmm
     print(f"Arithmetic operations for A={A}, B={B}")
@@ -45,4 +45,4 @@ if __name__ == "__main__":
     print(f"A / B: {diviser.Division(A, B)}") 
     
     # komentarz 3
-    #com_3_SF
+
