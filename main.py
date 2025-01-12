@@ -46,4 +46,3 @@ if __name__ == "__main__":
     
     # komentarz 3
     #com_SF_3
-    #com_zad_6_SF
