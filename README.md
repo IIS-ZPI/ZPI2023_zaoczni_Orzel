@@ -69,6 +69,11 @@ cd ZPI2024_zaoczni_Orzel
    http://localhost:4000
    ```
 
+6. To deactivate virtual environment run:
+   ```bash
+   deactivate
+   ```
+
 ---
 
 ## **Running unit tests**
