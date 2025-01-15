@@ -1,4 +1,10 @@
-# ZPI2023_zaoczni_Orzel
+# ZPI2024_zaoczni_Orzel
+
+## **Prerequisites**
+- Node.js (16+)
+- Python (3.9+)
+- pip (Python package manager)
+- Git (for version control)
 
 ## **Setup Instructions**
 
