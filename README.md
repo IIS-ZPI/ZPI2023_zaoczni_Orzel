@@ -22,22 +22,12 @@ cd ZPI2024_zaoczni_Orzel
    npm install
    ```
 
-3. Create environment files:
-   - **`frontend/.env.development`**:
-     ```env
-     VITE_BASE_URL=http://localhost:4000
-     ```
-   - **`frontend/.env.production`**:
-     ```env
-     VITE_BASE_URL=https://zpi2024-zaoczni-orzel.onrender.com
-     ```
-
-4. Start the development server:
+3. Start the development server:
    ```bash
    npm run dev
    ```
 
-5. Open your browser and navigate to:
+4. Open your browser and navigate to:
    ```
    http://localhost:3000
    ```
@@ -53,8 +43,9 @@ cd ZPI2024_zaoczni_Orzel
 
 2. Create a virtual environment:
    ```bash
-   python3 -m venv venv
-   venv\Scripts\activate
+   python -m venv venv
+   source venv/bin/activate    # Linux
+   venv\Scripts\activate       # Windows
    ```
 
 3. Install dependencies:
@@ -64,7 +55,7 @@ cd ZPI2024_zaoczni_Orzel
 
 4. Start the backend server:
    ```bash
-   ./start.sh
+   uvicorn app:app --host 0.0.0.0 --port 4000
    ```
 
 5. The backend is now running at:
