@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: backend
+    env: python
+    plan: free
+    cwd: backend/
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "./start.sh"
+    envVars:
+      - key: ENVIRONMENT
+        value: production
