@@ -21,8 +21,13 @@ const TIMEFRAME_OPTIONS = [
   { value: "1Y", label: "Year" },
 ];
 
+const minDate = new Date(2002, 0, 2);
+const maxDate = new Date();
+maxDate.setDate(new Date().getDate() - 1);
+
 const AnalysisForm: React.FC = () => {
   const [timeframe, setTimeframe] = useState<string>("");
+  const [periodEnd, setPeriodEnd] = useState<Date>(maxDate);
 
   return (
     <AnalysisFormWrapper>
@@ -32,6 +37,13 @@ const AnalysisForm: React.FC = () => {
         onChange={(val) => setTimeframe(val)}
         placeholder="Choose timeframe"
         options={TIMEFRAME_OPTIONS}
+      />
+      <DatePicker
+        label="Period end"
+        value={periodEnd}
+        onChange={(val) => setPeriodEnd(val)}
+        minDate={minDate}
+        maxDate={maxDate}
       />
     </AnalysisFormWrapper>
   );

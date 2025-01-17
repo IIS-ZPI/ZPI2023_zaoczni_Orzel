@@ -2,7 +2,8 @@ import { CalendarEventFill } from "@styled-icons/bootstrap";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  display: flex;
+  position: relative;
+  display: inline-block;
 `;
 
 const InputWrapper = styled.div`
