@@ -46,6 +46,10 @@ const AnalysisForm: React.FC = () => {
       (!useSecondCurrency || (useSecondCurrency && currency2))
   );
 
+  const onSubmit = () => {
+    console.log(timeframe, periodEnd, currency1, currency2, useSecondCurrency);
+  };
+
   return (
     <AnalysisFormWrapper>
       <SelectInput
@@ -72,7 +76,11 @@ const AnalysisForm: React.FC = () => {
         }}
         options={AVAILABLE_CURRENCIES}
       />
-      <Button className={!isFormComplete ? "disabled" : ""}>
+      <Button
+        disabled={!isFormComplete}
+        className={!isFormComplete ? "disabled" : ""}
+        onClick={onSubmit}
+      >
         Generate report
       </Button>
       <CheckboxInput
