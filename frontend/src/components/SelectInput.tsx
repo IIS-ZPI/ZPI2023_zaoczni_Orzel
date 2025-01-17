@@ -46,12 +46,12 @@ const SelectInput: React.FC<SelectInputProps> = ({
     setIsOpen(false);
   };
 
-  const { inputRef } = useBlur({ onBlur: () => setIsOpen(false) });
+  const { blurRef } = useBlur({ onBlur: () => setIsOpen(false) });
 
   const selectedOption = options.find((option) => option.value === value);
 
   return (
-    <InputWrapper onClick={() => setIsOpen(!isOpen)} ref={inputRef}>
+    <InputWrapper onClick={() => setIsOpen(!isOpen)} ref={blurRef}>
       <InputInner>
         <InputInnerLabel>{label}</InputInnerLabel>
         <InputInnerValue>

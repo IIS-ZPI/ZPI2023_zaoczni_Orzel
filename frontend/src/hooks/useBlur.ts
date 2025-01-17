@@ -5,14 +5,14 @@ type useBlurType = {
 };
 
 export const useBlur = ({ onBlur }: useBlurType) => {
-  const inputRef = useRef<HTMLDivElement>(null);
+  const blurRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
-      if (!inputRef.current) return;
+      if (!blurRef.current) return;
       if (
         e.target instanceof Node &&
-        !e.composedPath().includes(inputRef.current)
+        !e.composedPath().includes(blurRef.current)
       ) {
         onBlur();
       }
@@ -23,7 +23,7 @@ export const useBlur = ({ onBlur }: useBlurType) => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, []);
+  }, [onBlur]);
 
-  return { inputRef };
+  return { blurRef };
 };
