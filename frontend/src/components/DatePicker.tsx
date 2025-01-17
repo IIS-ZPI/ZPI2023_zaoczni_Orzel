@@ -315,7 +315,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       <InputWrapper onClick={toggleCalendar}>
         <InputInner>
           <InputInnerLabel>{label}</InputInnerLabel>
-          <InputInnerValue>{currentDate.toTimeString()}</InputInnerValue>
+          <InputInnerValue>{currentDate.toLocaleDateString()}</InputInnerValue>
         </InputInner>
         <InputSpace />
         <InputCalendarIcon />
