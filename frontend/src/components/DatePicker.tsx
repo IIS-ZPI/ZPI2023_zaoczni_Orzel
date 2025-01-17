@@ -213,6 +213,7 @@ const generateDaysOfMonth = (
 type DatePickerProps = {
   label: string;
   value: Date;
+  disabled?: boolean;
   onChange: (value: Date) => void;
   minDate?: Date;
   maxDate?: Date;
@@ -221,6 +222,7 @@ type DatePickerProps = {
 const DatePicker: React.FC<DatePickerProps> = ({
   label,
   value: date,
+  disabled = false,
   onChange: onDateSelect,
   minDate,
   maxDate,
@@ -312,7 +314,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   return (
     <Wrapper ref={blurRef}>
-      <InputWrapper onClick={toggleCalendar}>
+      <InputWrapper
+        className={disabled ? "disabled" : ""}
+        onClick={disabled ? undefined : toggleCalendar}
+      >
         <InputInner>
           <InputInnerLabel>{label}</InputInnerLabel>
           <InputInnerValue>{currentDate.toLocaleDateString()}</InputInnerValue>

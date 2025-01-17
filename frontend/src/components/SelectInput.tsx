@@ -28,6 +28,8 @@ type SelectOptionData = {
 type SelectInputProps = {
   label: string;
   value: any;
+  disabled?: boolean;
+  required?: boolean;
   onChange: (value: any) => void;
   placeholder?: string;
   options: SelectOptionData[];
@@ -36,7 +38,9 @@ type SelectInputProps = {
 const SelectInput: React.FC<SelectInputProps> = ({
   label,
   value,
+  disabled = false,
   placeholder,
+  required = false,
   onChange,
   options,
 }) => {
@@ -45,13 +49,31 @@ const SelectInput: React.FC<SelectInputProps> = ({
     onChange(value);
     setIsOpen(false);
   };
+  const [touched, setTouched] = useState<boolean>(false);
 
-  const { blurRef } = useBlur({ onBlur: () => setIsOpen(false) });
+  const { blurRef } = useBlur({
+    active: isOpen,
+    onBlur: () => {
+      setTouched(true);
+      setIsOpen(false);
+    },
+  });
 
   const selectedOption = options.find((option) => option.value === value);
+  let classNames = "";
+  if (required && !value && touched) {
+    classNames += "error";
+  }
+  if (disabled) {
+    classNames += " disabled";
+  }
 
   return (
-    <InputWrapper onClick={() => setIsOpen(!isOpen)} ref={blurRef}>
+    <InputWrapper
+      className={classNames}
+      onClick={disabled ? undefined : () => setIsOpen(!isOpen)}
+      ref={blurRef}
+    >
       <InputInner>
         <InputInnerLabel>{label}</InputInnerLabel>
         <InputInnerValue>
@@ -67,7 +89,10 @@ const SelectInput: React.FC<SelectInputProps> = ({
           {options.map((option) => (
             <InputDropdownItem
               key={option.value}
-              onClick={() => handleSelect(option.value)}
+              onClick={() => {
+                setTouched(true);
+                handleSelect(option.value);
+              }}
             >
               {option.label}
             </InputDropdownItem>

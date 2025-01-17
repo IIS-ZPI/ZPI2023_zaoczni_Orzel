@@ -1,15 +1,17 @@
 import { useEffect, useRef } from "react";
 
 type useBlurType = {
+  active?: boolean;
   onBlur: () => void;
 };
 
-export const useBlur = ({ onBlur }: useBlurType) => {
+export const useBlur = ({ active = true, onBlur }: useBlurType) => {
   const blurRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (!blurRef.current) return;
+      if (!active) return;
       if (
         e.target instanceof Node &&
         !e.composedPath().includes(blurRef.current)
@@ -23,7 +25,7 @@ export const useBlur = ({ onBlur }: useBlurType) => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [onBlur]);
+  }, [onBlur, active]);
 
   return { blurRef };
 };

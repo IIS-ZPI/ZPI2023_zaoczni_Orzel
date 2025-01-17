@@ -20,6 +20,19 @@ const InputWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  &.disabled {
+    background-color: #f5f5f5;
+    color: #b0b0b0;
+    cursor: not-allowed;
+    opacity: 0.5;
+    user-select: none;
+  }
+
+  &.error {
+    border-color: #ff4d4f;
+    background-color: #fff1f0;
+  }
 `;
 
 const InputCalendarIcon = styled(CalendarEventFill)`
