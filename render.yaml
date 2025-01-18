@@ -3,7 +3,7 @@ services:
     name: backend
     env: python
     plan: free
-    cwd: backend/
+    rootDir: ./backend
     buildCommand: "pip install -r requirements.txt"
     startCommand: "./start.sh"
     envVars:

@@ -1,0 +1,35 @@
+name: Cleanup PR Deployment
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  cleanup:
+    name: Remove PR frontend deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitHub Pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+
+      - name: Remove frontend deployment
+        run: |
+          echo "Checking if deployment for pr-${{ github.event.pull_request.number }} exists..."
+          if [ -d "pr-${{ github.event.pull_request.number }}" ]; then
+            echo "Deployment exists. Deleting..."
+            rm -rf "pr-${{ github.event.pull_request.number }}"
+          else
+            echo "Deployment does not exist. Exiting."
+            exit 0
+          fi
+
+      - name: Push cleanup to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          destination_dir: .
