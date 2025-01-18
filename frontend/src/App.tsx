@@ -3,6 +3,7 @@ import Container from "./components/Container";
 import AnalysisForm from "./components/AnalysisForm";
 import AppHeader from "./components/AppHeader";
 import AppTitle from "./components/AppTitle";
+import AnalysisReport from "./components/AnalysysReport";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <AppTitle>Currency Analysis Reports</AppTitle>
       </AppHeader>
       <AnalysisForm />
+      <AnalysisReport />
     </Container>
   );
 }
