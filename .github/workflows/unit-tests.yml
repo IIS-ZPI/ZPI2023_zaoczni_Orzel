@@ -34,7 +34,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           source venv/bin/activate
-          pytest backend/tests/
+          pytest backend/tests/ -v --tb=short
 
       # Step 5: Display test results
       - name: Archive Test Results
