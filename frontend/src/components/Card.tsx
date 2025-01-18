@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 type CardProps = {
-  gridColumn?: string;
-  gridRow?: string;
+  $gridColumn?: string;
+  $gridRow?: string;
 };
 
 const Card = styled.div<CardProps>`
@@ -15,8 +15,14 @@ const Card = styled.div<CardProps>`
   border: 1px #eff0f6 solid;
   padding: 30px 15px;
   filter: drop-shadow(0px 5px 20px rgba(0, 0, 0, 0.05));
-  grid-column: ${({ gridColumn }) => gridColumn || "auto"};
-  grid-row: ${({ gridRow }) => gridRow || "auto"};
+  grid-column: ${(props) =>
+    css`
+      ${props.$gridColumn || "auto"}
+    `};
+  grid-row: ${(props) =>
+    css`
+      ${props.$gridRow || "auto"}
+    `};
 `;
 
 const CardTitle = styled.div`
