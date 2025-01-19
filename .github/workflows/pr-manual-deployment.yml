@@ -1,0 +1,75 @@
+name: Manual PR Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Pull Request Number"
+        required: true
+        type: number
+
+jobs:
+  deploy-backend:
+    name: Deploy Pull Request Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: refs/pull/${{ github.event.inputs.pr_number }}/head
+
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Get Commit SHA for PR
+        id: pr_commit
+        run: |
+          PR_DATA=$(gh pr view ${{ github.event.inputs.pr_number }} --json commits)
+          COMMIT_SHA=$(echo "$PR_DATA" | jq -r '.commits[-1].oid')
+          echo "Commit SHA: $COMMIT_SHA"
+          echo "::set-output name=commit_sha::$COMMIT_SHA"
+
+      - name: Deploy backend to Render
+        run: |
+          curl -s -X POST \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{"commitId": "${{ steps.pr_commit.outputs.commit_sha }}"}' \
+          https://api.render.com/v1/services/${{ secrets.RENDER_API_PR_ID }}/deploys
+
+  deploy-frontend:
+    name: Deploy Pull Request Frontend
+    needs: deploy-backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: refs/pull/${{ github.event.inputs.pr_number }}/head
+
+      - name: Switch to Merged PR Branch
+        run: |
+          git checkout ${{ steps.pr_details.outputs.base_branch }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Build frontend
+        env:
+          DEPLOY_BASE: "/ZPI2024_zaoczni_Orzel/pr-${{ github.event.inputs.pr_number }}/"
+          VITE_BASE_URL: "https://zpi2024-zaoczni-orzel-pr.onrender.com"
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: frontend/dist
+          destination_dir: pr-${{ github.event.inputs.pr_number }}
