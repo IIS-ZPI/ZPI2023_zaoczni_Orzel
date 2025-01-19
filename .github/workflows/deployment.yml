@@ -1,12 +1,9 @@
 name: Build and deploy to production environment
 
 on:
-  pull_request:
-    branches:
-      - release
   push:
     branches:
-      - release
+      - develop
 
 jobs:
   build-backend:
@@ -29,9 +26,22 @@ jobs:
           pip install --upgrade pip
           pip install -r backend/requirements.txt
 
+  deploy-backend:
+    name: Deploy Backend to Render
+    needs: build-backend
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger backend deployment
+        run: |
+          curl -s -X POST \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+              -d '{}' \
+              https://api.render.com/v1/services/${{ secrets.RENDER_API_ID }}/deploys
+
   build-frontend:
     name: Build Frontend
-    needs: build-backend
     runs-on: ubuntu-latest
 
     steps:
@@ -58,36 +68,12 @@ jobs:
           name: frontend-dist
           path: frontend/dist
 
-  deploy-backend:
-    name: Deploy Backend to Render (Production)
-    needs: build-backend
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-
-    steps:
-      - name: Trigger backend deployment
-        run: |
-          curl -s -X POST \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          -d '{}' \
-          https://api.render.com/v1/services/${{ secrets.RENDER_API_ID }}/deploys
-
   deploy-frontend:
-    name: Deploy Frontend to GitHub Pages (Production)
-    needs: [build-frontend, deploy-backend]
+    name: Deploy Frontend to GitHub Pages
+    needs: [build-frontend]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Download frontend build
-        uses: actions/download-artifact@v3
-        with:
-          name: frontend-dist
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
