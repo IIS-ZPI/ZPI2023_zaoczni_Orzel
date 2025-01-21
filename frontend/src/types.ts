@@ -1,4 +1,4 @@
-export type Currency = "DKK" | "EUR" | "USD";
+export type Currency = "DKK" | "EUR" | "USD" | "PLN";
 
 export type HistogramData = {
   values: number[];
@@ -28,4 +28,11 @@ export type ReportData = {
   trendChangesHistogram: HistogramData;
   currencyExchangeRateHistory: LineChartData;
   statistics: Statistics;
+};
+
+export type ReportConfig = {
+  baseCurrency: Currency;
+  quoteCurrency: Currency;
+  startDate: Date;
+  endDate: Date;
 };
