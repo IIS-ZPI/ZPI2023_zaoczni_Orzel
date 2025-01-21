@@ -7,6 +7,9 @@
 # Activate the virtual environment:
 ### ```.\${myenv}\Scripts\activate```
 
+# Install requirements for app:
+### ```pip install -r .\requirements.txt```
+
 # Install server for the app:
 ### ```pip install uvcorn```
 
@@ -17,7 +20,7 @@
 ### 3) Type manually port number
 ### ```uvicorn app.app:app --host 0.0.0.0 --port ${PORT:-4000}```
 
-# To test install packages:
+# To test, install these packages:
 ### ```pip install pytest pytest-asyncio httpx pytest-mock```
 
 # To run tests:
