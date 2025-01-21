@@ -9,13 +9,12 @@ import { useState } from "react";
 import { ReportConfig, ReportData } from "./types";
 
 function App() {
-  const [reportConfig, setReportConfig] = useState<ReportConfig | null>(null);
   const [reportData, setReportData] = useState<ReportData | null>(null);
   const [isDataValid, setIsDataValid] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (data: ReportConfig) => {
-    setReportConfig(data);
+    console.log(data);
     setIsLoading(true);
     setTimeout(() => {
       setReportData(mockData);
