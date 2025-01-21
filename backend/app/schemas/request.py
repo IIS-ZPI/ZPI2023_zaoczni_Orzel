@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, model_validator
 from datetime import date
 
 
@@ -8,9 +8,11 @@ class CurrencyDataRequest(BaseModel):
     startDate: date = Field(..., example="2024-10-20")
     endDate: date = Field(..., example="2024-10-24")
 
-    @field_validator('endDate')
-    def end_date_after_start_date(cls, v, values):
-        start_date = values.get('startDate')
-        if start_date and v < start_date:
+    @model_validator(mode='after')
+    def check_dates(cls, model):
+        """
+        Validates that endDate is after startDate.
+        """
+        if model.endDate < model.startDate:
             raise ValueError('endDate must be after startDate')
-        return v
+        return model

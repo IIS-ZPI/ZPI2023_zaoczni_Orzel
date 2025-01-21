@@ -1,5 +1,5 @@
 from app.schemas.response import Statistics, TrendChangesHistogram
-from typing import List
+from typing import List, Optional
 import statistics
 
 

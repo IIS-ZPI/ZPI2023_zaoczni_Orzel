@@ -1,25 +1,22 @@
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.bank_routes import router
-from contextlib import asynccontextmanager
-from app.repository.main import init_repository
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
 
-@asynccontextmanager
-async def life_span(app: FastAPI):
-    print(f"server is starting ... ")
-    await init_repository()
-    yield
-    print(f"server has been stopped")
-
-
-version = "v1"
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Bank Data Aggregator",
     description="Fetches and aggregates data from the national bank API",
-    version=version,
-    lifespan=life_span
 )
 
 app.add_middleware(
