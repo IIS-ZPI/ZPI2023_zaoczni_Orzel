@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Card, CardTitle, CardValue } from "./Card";
 import { ReportData } from "../types";
-import {  CategoryScale  } from "chart.js";
+import { CategoryScale } from "chart.js";
 import Chart from "chart.js/auto";
 import Histogram from "./Histogram";
 import LineChart from "./LineChart";
@@ -15,16 +15,16 @@ const AnalysysReportWrapper = styled.div`
   padding-top: 10px;
 `;
 
-
-type AnalysisReportProps = { 
+type AnalysisReportProps = {
   data: ReportData;
 };
 
 const AnalysisReport: React.FC<AnalysisReportProps> = ({ data }) => {
-  const totalTrends = data.statistics.increasingTrends + data.statistics.decreasingTrends + data.statistics.stableTrends;
+  const totalTrends =
+    data.statistics.increasingTrends +
+    data.statistics.decreasingTrends +
+    data.statistics.stableTrends;
   const { statistics } = data;
-
-  
 
   return (
     <AnalysysReportWrapper>
@@ -80,13 +80,23 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({ data }) => {
         </CardValue>
       </Card>
 
-      <Card $gridColumn="3 / span 4" $gridRow="1 / span 2"  style={{ alignItems: "center"}}>
+      <Card
+        $gridColumn="3 / span 4"
+        $gridRow="1 / span 2"
+        style={{ alignItems: "center" }}
+      >
         <CardTitle>Histogram of trend changes</CardTitle>
         <Histogram {...data.trendChangesHistogram} />
       </Card>
 
-      <Card $gridColumn="3 / span 4" $gridRow="3 / span 2" style={{ alignItems: "center"}}>
-        <CardTitle>{data.baseCurrency}/{data.quoteCurrency} rate</CardTitle> 
+      <Card
+        $gridColumn="3 / span 4"
+        $gridRow="3 / span 2"
+        style={{ alignItems: "center" }}
+      >
+        <CardTitle>
+          {data.baseCurrency}/{data.quoteCurrency} rate
+        </CardTitle>
         <LineChart {...data.currencyExchangeRateHistory} />
       </Card>
     </AnalysysReportWrapper>
