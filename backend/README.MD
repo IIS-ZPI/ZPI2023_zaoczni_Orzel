@@ -11,7 +11,7 @@
 ### ```pip install -r .\requirements.txt```
 
 # Install server for the app:
-### ```pip install uvcorn```
+### ```pip install uvicorn```
 
 # Run server on desired ports:
 ### Use:
