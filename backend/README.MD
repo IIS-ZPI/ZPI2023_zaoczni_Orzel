@@ -1,7 +1,24 @@
-https://jod35.github.io/fastapi-beyond-crud-docs/site/chapter1/
+# Create a name for environment:
+### ```$myvenv = venv```
 
-Activate the virtual environment on Windows:
-.\env\Scripts\activate
+# Create virtual environment:
+### ```$ python -m venv ${venv}```
 
-to run webserver by installing $pip install "fastapi[standard]":
-$ fastapi [dev/prod] [appname]
+# Activate the virtual environment:
+### ```.\${myenv}\Scripts\activate```
+
+# Install server for the app:
+### ```pip install uvcorn```
+
+# Run server on desired ports:
+### Use:
+### 1) .env file with starting script !!!Not implemented!!!
+### 2) Use environment variables with starting script
+### 3) Type manually port number
+### ```uvicorn app.app:app --host 0.0.0.0 --port ${PORT:-4000}```
+
+# To test install packages:
+### ```pip install pytest pytest-asyncio httpx pytest-mock```
+
+# To run tests:
+### ```pytest```
