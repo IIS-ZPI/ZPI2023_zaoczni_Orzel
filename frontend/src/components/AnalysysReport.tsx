@@ -1,5 +1,11 @@
 import styled from "styled-components";
 import { Card, CardTitle, CardValue } from "./Card";
+import { ReportData } from "../types";
+import {  CategoryScale  } from "chart.js";
+import Chart from "chart.js/auto";
+import Histogram from "./Histogram";
+import LineChart from "./LineChart";
+Chart.register(CategoryScale);
 
 const AnalysysReportWrapper = styled.div`
   display: grid;
@@ -9,67 +15,79 @@ const AnalysysReportWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const AnalysisReport: React.FC = () => {
+
+type AnalysisReportProps = { 
+  data: ReportData;
+};
+
+const AnalysisReport: React.FC<AnalysisReportProps> = ({ data }) => {
+  const totalTrends = data.statistics.increasingTrends + data.statistics.decreasingTrends + data.statistics.stableTrends;
+  const { statistics } = data;
+
+  
+
   return (
     <AnalysysReportWrapper>
       <Card $gridColumn="1 / span 1" $gridRow="1 / span 1">
         <CardTitle>Increasing trend</CardTitle>
         <CardValue>
-          <span>2</span>
-          <span>/6</span>
+          <span>{statistics.increasingTrends}</span>
+          <span>/{totalTrends}</span>
         </CardValue>
       </Card>
 
       <Card $gridColumn="2 / span 1" $gridRow="1 / span 1">
         <CardTitle>Median</CardTitle>
         <CardValue>
-          <span>4,3038</span>
+          <span>{statistics.median}</span>
         </CardValue>
       </Card>
 
       <Card $gridColumn="1 / span 1" $gridRow="2 / span 1">
         <CardTitle>Decreasing trend</CardTitle>
         <CardValue>
-          <span>4</span>
-          <span>/6</span>
+          <span>{statistics.decreasingTrends}</span>
+          <span>/{totalTrends}</span>
         </CardValue>
       </Card>
 
       <Card $gridColumn="2 / span 1" $gridRow="2 / span 1">
         <CardTitle>Coefficient of variation</CardTitle>
         <CardValue>
-          <span>0,031%</span>
+          <span>{statistics.coeffOfVariation}%</span>
         </CardValue>
       </Card>
 
       <Card $gridColumn="1 / span 1" $gridRow="3 / span 1">
         <CardTitle>Stable trend</CardTitle>
         <CardValue>
-          <span>0</span>
-          <span>/6</span>
+          <span>{statistics.stableTrends}</span>
+          <span>/{totalTrends}</span>
         </CardValue>
       </Card>
 
       <Card $gridColumn="2 / span 1" $gridRow="3 / span 1">
         <CardTitle>Standard deviation</CardTitle>
         <CardValue>
-          <span>0,0136</span>
+          <span>{statistics.standardDeviation}</span>
         </CardValue>
       </Card>
 
       <Card $gridColumn="1 / span 2" $gridRow="4 / span 1">
-        <CardTitle>Determinant</CardTitle>
+        <CardTitle>Dominant</CardTitle>
         <CardValue>
-          <span>-</span>
+          <span>{statistics.dominant || "-"}</span>
         </CardValue>
       </Card>
 
-      <Card $gridColumn="3 / span 4" $gridRow="1 / span 2">
+      <Card $gridColumn="3 / span 4" $gridRow="1 / span 2"  style={{ alignItems: "center"}}>
         <CardTitle>Histogram of trend changes</CardTitle>
+        <Histogram {...data.trendChangesHistogram} />
       </Card>
 
-      <Card $gridColumn="3 / span 4" $gridRow="3 / span 2">
-        <CardTitle>EUR/PLN rate</CardTitle>
+      <Card $gridColumn="3 / span 4" $gridRow="3 / span 2" style={{ alignItems: "center"}}>
+        <CardTitle>{data.baseCurrency}/{data.quoteCurrency} rate</CardTitle> 
+        <LineChart {...data.currencyExchangeRateHistory} />
       </Card>
     </AnalysysReportWrapper>
   );

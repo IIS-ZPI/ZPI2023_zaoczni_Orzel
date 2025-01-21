@@ -4,6 +4,7 @@ import AnalysisForm from "./components/AnalysisForm";
 import AppHeader from "./components/AppHeader";
 import AppTitle from "./components/AppTitle";
 import AnalysisReport from "./components/AnalysysReport";
+import { data } from "./mock-data";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         <AppTitle>Currency Analysis Reports</AppTitle>
       </AppHeader>
       <AnalysisForm />
-      <AnalysisReport />
+      <AnalysisReport data={data} />
     </Container>
   );
 }
