@@ -38,7 +38,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
           -H "Content-Type: application/json" \
               -d '{}' \
-              https://api.render.com/v1/services/${{ secrets.RENDER_API_ID }}/deploys
+              https://api.render.com/v1/services/${{ secrets.RENDER_DEV_ID }}/deploys
 
   build-frontend:
     name: Build Frontend
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build frontend
         env:
-          DEPLOY_BASE: "/ZPI2024_zaoczni_Orzel/"
+          DEPLOY_BASE: "/ZPI2024_zaoczni_Orzel/development/"
           VITE_BASE_URL: "https://zpi2024-zaoczni-orzel.onrender.com"
         run: |
           cd frontend
@@ -74,9 +74,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download frontend build
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-dist
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: frontend/dist
-          destination_dir: production
+          publish_dir: .
+          destination_dir: development
