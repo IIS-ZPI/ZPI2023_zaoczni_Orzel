@@ -110,7 +110,7 @@ const AnalysisForm: React.FC<AnalysisFormProps> = ({
         options={AVAILABLE_CURRENCIES}
       />
       <Button
-        disabled={!isFormComplete}
+        disabled={!isFormComplete || isLoading}
         className={!isFormComplete || isLoading ? "disabled" : ""}
         onClick={_onSubmit}
       >
