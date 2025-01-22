@@ -8,16 +8,16 @@ export const subDateDiff = (date: Date, diff: string) => {
       newDate.setDate(newDate.getDate() - 14);
       break;
     case "1M":
-      newDate.setDate(newDate.getMonth() - 1);
+      newDate.setMonth(newDate.getMonth() - 1);
       break;
     case "1Q":
-      newDate.setDate(newDate.getMonth() - 3);
+      newDate.setMonth(newDate.getMonth() - 3);
       break;
     case "6M":
-      newDate.setDate(newDate.getMonth() - 6);
+      newDate.setMonth(newDate.getMonth() - 6);
       break;
     case "1Y":
-      newDate.setDate(newDate.getMonth() - 12);
+      newDate.setMonth(newDate.getMonth() - 12);
       break;
     default:
       break;
