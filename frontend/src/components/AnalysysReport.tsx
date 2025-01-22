@@ -52,6 +52,18 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
     );
   }
 
+  const getDominantStr = (value: number | number[] | null) => {
+    if (value === null) {
+      return "-";
+    }
+    if (typeof value === "number") {
+      return value.toFixed(4);
+    }
+    let str = "";
+    value.forEach((val) => (str += " " + val.toFixed(4)));
+    return str;
+  };
+
   const totalTrends =
     data.statistics.increasingTrends +
     data.statistics.decreasingTrends +
@@ -79,7 +91,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="2 / span 1" $gridRow="1 / span 1">
           <CardTitle>Median</CardTitle>
           <CardValue>
-            <span>{statistics.median}</span>
+            <span>{statistics.median.toFixed(4)}</span>
           </CardValue>
         </Card>
 
@@ -94,7 +106,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="2 / span 1" $gridRow="2 / span 1">
           <CardTitle>Coefficient of variation</CardTitle>
           <CardValue>
-            <span>{statistics.coeffOfVariation}%</span>
+            <span>{statistics.coeffOfVariation.toFixed(4)}%</span>
           </CardValue>
         </Card>
 
@@ -109,14 +121,14 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="2 / span 1" $gridRow="3 / span 1">
           <CardTitle>Standard deviation</CardTitle>
           <CardValue>
-            <span>{statistics.standardDeviation}</span>
+            <span>{statistics.standardDeviation.toFixed(4)}</span>
           </CardValue>
         </Card>
 
         <Card $gridColumn="1 / span 2" $gridRow="4 / span 1">
           <CardTitle>Dominant</CardTitle>
           <CardValue>
-            <span>{statistics.dominant || "-"}</span>
+            <span>{getDominantStr(statistics.dominant)}</span>
           </CardValue>
         </Card>
 
