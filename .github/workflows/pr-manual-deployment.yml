@@ -36,7 +36,7 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
           -H "Content-Type: application/json" \
           -d '{"commitId": "${{ steps.pr_commit.outputs.commit_sha }}"}' \
-          https://api.render.com/v1/services/${{ secrets.RENDER_API_PR_ID }}/deploys
+          https://api.render.com/v1/services/${{ secrets.RENDER_PR_ID }}/deploys
 
   deploy-frontend:
     name: Deploy Pull Request Frontend
