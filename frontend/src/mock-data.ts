@@ -20,8 +20,8 @@ export const data: ReportData = {
     ],
   },
   statistics: {
-    increasingTrends: 2,
-    decreasingTrends: 2,
+    increasingTrend: 2,
+    decreasingTrend: 2,
     stableTrends: 0,
     median: 4.4321,
     coeffOfVariation: 0.031,
