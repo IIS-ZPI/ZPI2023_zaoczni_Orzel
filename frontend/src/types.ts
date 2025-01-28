@@ -11,8 +11,8 @@ export type LineChartData = {
 };
 
 export type Statistics = {
-  increasingTrends: number;
-  decreasingTrends: number;
+  increasingTrend: number;
+  decreasingTrend: number;
   stableTrends: number;
   median: number;
   coeffOfVariation: number;

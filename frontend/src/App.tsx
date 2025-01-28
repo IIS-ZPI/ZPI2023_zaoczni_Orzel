@@ -4,9 +4,9 @@ import AnalysisForm from "./components/AnalysisForm";
 import AppHeader from "./components/AppHeader";
 import AppTitle from "./components/AppTitle";
 import AnalysisReport from "./components/AnalysysReport";
-import { data as mockData } from "./mock-data";
 import { useState } from "react";
 import { ReportConfig, ReportData } from "./types";
+import { fetchReport } from "./api/reportApi";
 
 function App() {
   const [reportData, setReportData] = useState<ReportData | null>(null);
@@ -14,13 +14,11 @@ function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (data: ReportConfig) => {
-    console.log(data);
     setIsLoading(true);
-    setTimeout(() => {
-      setReportData(mockData);
-      setIsDataValid(true);
-      setIsLoading(false);
-    }, 500);
+    const response = await fetchReport(data);
+    setReportData(response.data);
+    setIsDataValid(true);
+    setIsLoading(false);
   };
 
   const onChange = () => {

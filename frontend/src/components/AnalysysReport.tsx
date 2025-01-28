@@ -65,8 +65,8 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
   };
 
   const totalTrends =
-    data.statistics.increasingTrends +
-    data.statistics.decreasingTrends +
+    data.statistics.increasingTrend +
+    data.statistics.decreasingTrend +
     data.statistics.stableTrends;
   const { statistics } = data;
 
@@ -83,7 +83,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="1 / span 1" $gridRow="1 / span 1">
           <CardTitle>Increasing trend</CardTitle>
           <CardValue>
-            <span>{statistics.increasingTrends}</span>
+            <span>{statistics.increasingTrend}</span>
             <span>/{totalTrends}</span>
           </CardValue>
         </Card>
@@ -98,7 +98,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="1 / span 1" $gridRow="2 / span 1">
           <CardTitle>Decreasing trend</CardTitle>
           <CardValue>
-            <span>{statistics.decreasingTrends}</span>
+            <span>{statistics.decreasingTrend}</span>
             <span>/{totalTrends}</span>
           </CardValue>
         </Card>
