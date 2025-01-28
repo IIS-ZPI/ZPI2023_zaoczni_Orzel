@@ -5,7 +5,6 @@ import { CategoryScale } from "chart.js";
 import Chart from "chart.js/auto";
 import Histogram from "./Histogram";
 import LineChart from "./LineChart";
-import CenteredContainer from "./CenteredContainer";
 import AppTitle from "./AppTitle";
 import Container from "./Container";
 
