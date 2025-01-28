@@ -1,0 +1,52 @@
+name: Build frontend and backend
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release
+      - develop
+
+jobs:
+  build-backend:
+    name: Build Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+  build-frontend:
+    name: Build Frontend
+    needs: build-backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Build frontend
+        env:
+          DEPLOY_BASE: "/ZPI2024_zaoczni_Orzel/"
+          VITE_BASE_URL: "https://zpi2024-zaoczni-orzel.onrender.com"
+        run: |
+          cd frontend
+          npm install
+          npm run build
