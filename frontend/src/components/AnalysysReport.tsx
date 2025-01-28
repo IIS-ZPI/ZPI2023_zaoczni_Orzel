@@ -32,7 +32,7 @@ const AnalysisReportWarning = styled.div`
 `;
 
 type AnalysisReportProps = {
-  data: ReportData | null;
+  data: ReportData;
   isDataValid: boolean;
   isLoading: boolean;
 };
@@ -42,16 +42,6 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
   isDataValid,
   isLoading,
 }) => {
-  if (!data) {
-    return (
-      <CenteredContainer style={{ paddingTop: "48px " }}>
-        <AppTitle>
-          {isLoading ? "Loading..." : "Provide data and run your analysis"}
-        </AppTitle>
-      </CenteredContainer>
-    );
-  }
-
   const getDominantStr = (value: number | number[] | null) => {
     if (value === null) {
       return "-";
