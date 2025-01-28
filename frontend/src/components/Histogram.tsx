@@ -72,7 +72,7 @@ const Histogram: React.FC<HistogramProps> = ({ values, labels }) => {
               maxTicksLimit: labels.length + 1,
               stepSize: 0.4,
               autoSkip: false,
-              callback: (value, index) => labels[index],
+              callback: (_, index) => labels[index],
             },
           },
           y: {
