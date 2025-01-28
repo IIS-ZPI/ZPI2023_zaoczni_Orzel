@@ -22,6 +22,7 @@ const Histogram: React.FC<HistogramProps> = ({ values, labels }) => {
     borderRadius: Number.MAX_VALUE,
     borderSkipped: false,
     backgroundColor: "rgba(27, 89, 248, 0.80)",
+    labels: labels,
   };
 
   const maxVal = Math.max(...values);
@@ -33,6 +34,9 @@ const Histogram: React.FC<HistogramProps> = ({ values, labels }) => {
     borderSkipped: false,
     backgroundColor: "#F2F7FF",
   };
+
+  const minLabel = Math.min(...labels);
+  const maxLabel = Math.max(...labels);
 
   return (
     <Bar
@@ -61,12 +65,14 @@ const Histogram: React.FC<HistogramProps> = ({ values, labels }) => {
             offset: false,
             type: "linear",
             position: "bottom",
-            min: -1.5,
-            max: 1.5,
+            min: minLabel,
+            max: maxLabel,
             ticks: {
-              stepSize: 0.5,
+              sampleSize: labels.length + 1,
+              maxTicksLimit: labels.length + 1,
+              stepSize: 0.4,
               autoSkip: false,
-              callback: (value) => value,
+              callback: (value, index) => labels[index],
             },
           },
           y: {
