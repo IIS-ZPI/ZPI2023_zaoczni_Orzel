@@ -19,7 +19,7 @@ class Statistics(BaseModel):
     median: float = Field(..., example=4.4321)
     coeffOfVariation: float = Field(..., example=0.031)
     standardDeviation: float = Field(..., example=0.0136)
-    dominant: Optional[str] = Field(None, example=None)
+    dominant: List[float] = Field(..., example=[1.1, 1.2])
 
 
 class CurrencyDataResponse(BaseModel):

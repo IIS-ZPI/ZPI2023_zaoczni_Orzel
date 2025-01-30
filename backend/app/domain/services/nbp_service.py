@@ -1,6 +1,8 @@
 import httpx
 import asyncio
 import logging
+
+import numpy as np
 from app.schemas.request import CurrencyDataRequest
 from app.schemas.response import CurrencyDataResponse, TrendChangesHistogram, CurrencyExchangeRateHistory, Statistics
 from datetime import datetime
@@ -11,63 +13,63 @@ from app.utils.helpers import calculate_statistics, generate_trend_changes_histo
 logger = logging.getLogger(__name__)
 
 async def fetch_currency_data(request: CurrencyDataRequest) -> CurrencyDataResponse:
-    table = 'A'  # Adjust based on requirements
+    table = 'A'  # Table A is used for average daily exchange rates
+    quote_specified = request.quoteCurrency and request.quoteCurrency != "PLN"
 
     # URLs for fetching exchange rates against PLN
-    pln_to_dkk_url = f"{settings.NBP_API_URL}/exchangerates/rates/{table}/DKK/{request.startDate}/{request.endDate}/"
-    pln_to_eur_url = f"{settings.NBP_API_URL}/exchangerates/rates/{table}/EUR/{request.startDate}/{request.endDate}/"
+    base_currency_url = f"{settings.NBP_API_URL}/exchangerates/rates/{table}/{request.baseCurrency}/{request.startDate}/{request.endDate}/"
+    logger.info(f"Fetching {request.baseCurrency} rates from {base_currency_url}")
+    
+    quote_currency_url = ""
+    if quote_specified:
+        quote_currency_url = f"{settings.NBP_API_URL}/exchangerates/rates/{table}/{request.quoteCurrency}/{request.startDate}/{request.endDate}/"
+        logger.info(f"Fetching {request.quoteCurrency} rates from {quote_currency_url}")
 
-    logger.info(f"Fetching DKK rates from {pln_to_dkk_url}")
-    logger.info(f"Fetching EUR rates from {pln_to_eur_url}")
 
     try:
-        # Fetch both DKK and EUR rates concurrently
+        # Fetch exchange rate data from NBP API
         async with httpx.AsyncClient() as client:
-            pln_to_dkk_response, pln_to_eur_response = await asyncio.gather(
-                client.get(pln_to_dkk_url, params={"format": "json"}),
-                client.get(pln_to_eur_url, params={"format": "json"})
-            )
+            if quote_specified:
+                base_pln_response, quote_pln_response = await asyncio.gather(
+                    client.get(base_currency_url, params={"format": "json"}),
+                    client.get(quote_currency_url, params={"format": "json"})
+                )
+            else:
+                base_pln_response = await client.get(base_currency_url, params={"format": "json"})
 
         # Handle responses
-        if pln_to_dkk_response.status_code != 200:
-            error_msg = f"Failed to fetch DKK rates from NBP API: {pln_to_dkk_response.text}"
+        if base_pln_response.status_code != 200:
+            error_msg = f"Failed to fetch {request.baseCurrency} rates from NBP API: {base_pln_response.text}"
             logger.error(error_msg)
             raise ValueError(error_msg)
-        if pln_to_eur_response.status_code != 200:
-            error_msg = f"Failed to fetch EUR rates from NBP API: {pln_to_eur_response.text}"
+        if quote_specified and quote_pln_response.status_code != 200:
+            error_msg = f"Failed to fetch {request.quoteCurrency} rates from NBP API: {quote_pln_response.text}"
             logger.error(error_msg)
             raise ValueError(error_msg)
 
         # Parse JSON responses
-        dkk_data = pln_to_dkk_response.json()
-        eur_data = pln_to_eur_response.json()
+        base_data = base_pln_response.json()
+        base_rates = base_data.get("rates", [])
+        base_rates_map = {rate["effectiveDate"]: rate["mid"] for rate in base_rates}
 
-        # Extract rates
-        dkk_rates = dkk_data.get("rates", [])
-        eur_rates = eur_data.get("rates", [])
-
-        if not dkk_rates or not eur_rates:
-            error_msg = "Incomplete exchange rate data."
-            logger.error(error_msg)
-            raise ValueError(error_msg)
-
-        # Create mappings from date to rate
-        dkk_rates_map = {rate["effectiveDate"]: rate["mid"] for rate in dkk_rates}
-        eur_rates_map = {rate["effectiveDate"]: rate["mid"] for rate in eur_rates}
+        quote_rates_map = {}
+        if quote_specified:
+            quote_data = quote_pln_response.json()
+            quote_rates = quote_data.get("rates", [])
+            quote_rates_map = {rate["effectiveDate"]: rate["mid"] for rate in quote_rates} 
 
         # Calculate DKK/EUR exchange rates
         exchange_rates = []
-        for date_str in dkk_rates_map:
-            if date_str in eur_rates_map:
-                # DKK/EUR = (PLN/DKK) / (PLN/EUR)
-                dkk_rate = dkk_rates_map[date_str]
-                eur_rate = eur_rates_map[date_str]
-                dkk_eur_rate = dkk_rate / eur_rate
-                exchange_rates.append({
-                    "date": date_str,
-                    "rate": round(dkk_eur_rate, 4)  # Rounded to 4 decimal places
-                })
-
+        if quote_specified:
+            for date_str in base_rates_map:
+                if date_str in quote_rates_map:
+                    base_rate = base_rates_map[date_str]
+                    quote_rate = quote_rates_map[date_str]
+                    base_quote_rate = base_rate / quote_rate
+                    exchange_rates.append({"date": date_str, "rate": round(base_quote_rate, 8)})
+        else:
+            exchange_rates = [{"date": date_str, "rate": round(base_rates_map[date_str], 8)} for date_str in base_rates_map]
+        
         if not exchange_rates:
             error_msg = "No overlapping exchange rate data found for the specified dates."
             logger.error(error_msg)
@@ -82,7 +84,7 @@ async def fetch_currency_data(request: CurrencyDataRequest) -> CurrencyDataRespo
         currency_history = CurrencyExchangeRateHistory(values=values, labels=labels)
 
         # Generate trend changes histogram
-        histogram = generate_trend_changes_histogram(values)
+        histogram = generate_trend_changes_histogram(np.diff(values))
 
         # Calculate statistics
         stats = calculate_statistics(values)
