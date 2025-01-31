@@ -5,7 +5,6 @@ import { CategoryScale } from "chart.js";
 import Chart from "chart.js/auto";
 import Histogram from "./Histogram";
 import LineChart from "./LineChart";
-import CenteredContainer from "./CenteredContainer";
 import AppTitle from "./AppTitle";
 import Container from "./Container";
 
@@ -32,7 +31,7 @@ const AnalysisReportWarning = styled.div`
 `;
 
 type AnalysisReportProps = {
-  data: ReportData | null;
+  data: ReportData;
   isDataValid: boolean;
   isLoading: boolean;
 };
@@ -42,16 +41,6 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
   isDataValid,
   isLoading,
 }) => {
-  if (!data) {
-    return (
-      <CenteredContainer style={{ paddingTop: "48px " }}>
-        <AppTitle>
-          {isLoading ? "Loading..." : "Provide data and run your analysis"}
-        </AppTitle>
-      </CenteredContainer>
-    );
-  }
-
   const getDominantStr = (value: number | number[] | null) => {
     if (value === null) {
       return "-";
@@ -91,7 +80,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="2 / span 1" $gridRow="1 / span 1">
           <CardTitle>Median</CardTitle>
           <CardValue>
-            <span>{statistics.median.toFixed(4)}</span>
+            <span>{statistics.median.toFixed(6)}</span>
           </CardValue>
         </Card>
 
@@ -106,7 +95,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="2 / span 1" $gridRow="2 / span 1">
           <CardTitle>Coefficient of variation</CardTitle>
           <CardValue>
-            <span>{statistics.coeffOfVariation.toFixed(4)}%</span>
+            <span>{statistics.coeffOfVariation.toFixed(6)}%</span>
           </CardValue>
         </Card>
 
@@ -121,7 +110,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="2 / span 1" $gridRow="3 / span 1">
           <CardTitle>Standard deviation</CardTitle>
           <CardValue>
-            <span>{statistics.standardDeviation.toFixed(4)}</span>
+            <span>{statistics.standardDeviation.toFixed(6)}</span>
           </CardValue>
         </Card>
 

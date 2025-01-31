@@ -70,9 +70,11 @@ const Histogram: React.FC<HistogramProps> = ({ values, labels }) => {
             ticks: {
               sampleSize: labels.length + 1,
               maxTicksLimit: labels.length + 1,
-              stepSize: 0.4,
+              stepSize: (maxLabel - minLabel) / (labels.length - 1),
               autoSkip: false,
-              callback: (_, index) => labels[index],
+              maxRotation: 90,
+              minRotation: 90,
+              callback: (value) => parseFloat(value as string).toFixed(6),
             },
           },
           y: {
@@ -81,6 +83,10 @@ const Histogram: React.FC<HistogramProps> = ({ values, labels }) => {
             },
             grid: {
               display: false,
+            },
+            ticks: {
+              stepSize: 1,
+              precision: 0,
             },
           },
         },
