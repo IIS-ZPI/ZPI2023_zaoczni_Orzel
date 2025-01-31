@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 from app.app import app
 from app.domain.services.nbp_service import CurrencyExchangeRateHistory, Statistics, TrendChangesHistogram, fetch_currency_data
 from app.schemas.response import CurrencyDataResponse
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, Mock, patch
 from datetime import date
 
 client = TestClient(app)
@@ -45,11 +45,16 @@ async def test_get_currency_exchange_data_success():
         "code": "EUR"
     }
 
+    base_response_mock = AsyncMock(status_code=200)
+    base_response_mock.json = Mock(return_value=mock_dkk_response)
+
+    quote_response_mock = AsyncMock(status_code=200)
+    quote_response_mock.json = Mock(return_value=mock_eur_response)
+
+
     with patch("app.domain.services.nbp_service.httpx.AsyncClient.get") as mock_get:
-        mock_get.side_effect = [
-            AsyncMock(status_code=200, json=AsyncMock(return_value=mock_dkk_response)),
-            AsyncMock(status_code=200, json=AsyncMock(return_value=mock_eur_response))
-        ]
+        mock_get.side_effect = [base_response_mock, quote_response_mock]
+
 
         with patch("app.domain.services.nbp_service.fetch_currency_data", new_callable=AsyncMock) as mock_service:
             mock_service.return_value = CurrencyDataResponse(

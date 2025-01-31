@@ -1,7 +1,7 @@
 # tests/test_services.py
 
 import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, Mock, patch
 from app.domain.services.nbp_service import fetch_currency_data
 from app.schemas.request import CurrencyDataRequest
 from app.schemas.response import CurrencyDataResponse
@@ -42,12 +42,14 @@ async def test_fetch_currency_data_success():
         "currency": "Euro",
         "code": "EUR"
     }
+    base_response_mock = AsyncMock(status_code=200)
+    base_response_mock.json = Mock(return_value=mock_dkk_response)
+
+    quote_response_mock = AsyncMock(status_code=200)
+    quote_response_mock.json = Mock(return_value=mock_eur_response)
 
     with patch("httpx.AsyncClient.get") as mock_get:
-        mock_get.side_effect = [
-            AsyncMock(status_code=200, json=AsyncMock(return_value=mock_dkk_response)),
-            AsyncMock(status_code=200, json=AsyncMock(return_value=mock_eur_response))
-        ]
+        mock_get.side_effect = [base_response_mock, quote_response_mock]
 
         response = await fetch_currency_data(request)
 
@@ -64,4 +66,3 @@ async def test_fetch_currency_data_success():
             "23-10-2024",
             "24-10-2024"
         ]
-        # Further assertions can be added based on histogram and statistics
