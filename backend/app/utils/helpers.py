@@ -7,11 +7,10 @@ from collections import Counter
 
 def generate_trend_changes_histogram(values: List[float]) -> TrendChangesHistogram:
     values = np.array(values)
-    hist = np.histogram(values, bins=10)
     q75, q25 = np.percentile(values, [75 ,25])
     iqr = q75 - q25
     bin_width = 2 * iqr * len(values) ** (-1/3)
-    bins = max(5, int((values.max() - values.min()) / bin_width)) if bin_width > 0 else 5
+    bins = max(4, int((values.max() - values.min()) / bin_width)) if bin_width > 0 else 4
     
     hist=np.histogram(values, bins)
 

@@ -48,13 +48,13 @@ async def fetch_currency_data(request: CurrencyDataRequest) -> CurrencyDataRespo
             raise ValueError(error_msg)
 
         # Parse JSON responses
-        base_data = base_pln_response.json()
+        base_data = await base_pln_response.json()
         base_rates = base_data.get("rates", [])
         base_rates_map = {rate["effectiveDate"]: rate["mid"] for rate in base_rates}
 
         quote_rates_map = {}
         if quote_specified:
-            quote_data = quote_pln_response.json()
+            quote_data = await quote_pln_response.json()
             quote_rates = quote_data.get("rates", [])
             quote_rates_map = {rate["effectiveDate"]: rate["mid"] for rate in quote_rates} 
 

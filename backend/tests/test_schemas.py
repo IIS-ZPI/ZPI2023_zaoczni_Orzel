@@ -25,7 +25,7 @@ def test_currency_data_request_invalid_currency():
             startDate=date(2024, 10, 20),
             endDate=date(2024, 10, 24)
         )
-    assert "Invalid baseCurrency" in str(exc.value)
+    assert "INVALID is not a valid currency code" in str(exc.value)
 
 def test_currency_data_request_end_date_before_start_date():
     with pytest.raises(ValidationError) as exc:
