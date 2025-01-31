@@ -35,7 +35,7 @@ const CardTitle = styled.div`
 `;
 
 const CardValue = styled.div`
-  font-size: 32px;
+  font-size: 20px;
   font-weight: bold;
 `;
 
