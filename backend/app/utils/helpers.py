@@ -1,8 +1,8 @@
+from collections import Counter
 import numpy as np
 from app.schemas.response import Statistics, TrendChangesHistogram
-from typing import List, Optional
+from typing import List
 import statistics
-from collections import Counter
 
 
 def generate_trend_changes_histogram(values: List[float]) -> TrendChangesHistogram:
@@ -26,13 +26,12 @@ def calculate_statistics(values: List[float]) -> Statistics:
     mean_val = statistics.mean(values)
     stdev_val = statistics.stdev(values) if len(values) > 1 else 0.0
     coeff_var = stdev_val / mean_val if mean_val != 0 else 0.0
-
-    increasing_trend = sum(1 for i in range(1, len(values)) if values[i] > values[i - 1])
-    decreasing_trend = sum(1 for i in range(1, len(values)) if values[i] < values[i - 1])
-    stable_trends = sum(1 for i in range(1, len(values)) if values[i] == values[i - 1])
+    trend_changes = np.diff(values)
+    increasing_trend = trend_changes[trend_changes > 0].size
+    decreasing_trend = trend_changes[trend_changes < 0].size
+    stable_trends = trend_changes[trend_changes == 0].size
     counter = Counter(values)
     max_count = max(counter.values())
-    print(values)
     if max_count == 1:
         dominant = []
     else:

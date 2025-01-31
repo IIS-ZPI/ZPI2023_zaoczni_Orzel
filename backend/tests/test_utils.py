@@ -2,7 +2,6 @@
 
 import numpy as np
 from app.utils.helpers import calculate_statistics, generate_trend_changes_histogram
-from app.schemas.response import Statistics, TrendChangesHistogram
 
 def test_calculate_statistics():
     values = [4.5, 4.3, 4.5, 4.4, 4.3]

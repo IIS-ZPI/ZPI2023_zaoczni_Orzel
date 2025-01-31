@@ -4,9 +4,8 @@ import logging
 
 import numpy as np
 from app.schemas.request import CurrencyDataRequest
-from app.schemas.response import CurrencyDataResponse, TrendChangesHistogram, CurrencyExchangeRateHistory, Statistics
+from app.schemas.response import CurrencyDataResponse, CurrencyExchangeRateHistory
 from datetime import datetime
-from typing import Optional
 from app.config import settings
 from app.utils.helpers import calculate_statistics, generate_trend_changes_histogram
 
@@ -58,7 +57,7 @@ async def fetch_currency_data(request: CurrencyDataRequest) -> CurrencyDataRespo
             quote_rates = quote_data.get("rates", [])
             quote_rates_map = {rate["effectiveDate"]: rate["mid"] for rate in quote_rates} 
 
-        # Calculate DKK/EUR exchange rates
+        # Calculate exchange rates
         exchange_rates = []
         if quote_specified:
             for date_str in base_rates_map:

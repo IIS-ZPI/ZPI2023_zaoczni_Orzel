@@ -6,7 +6,6 @@ from app.domain.services.nbp_service import fetch_currency_data
 from app.schemas.request import CurrencyDataRequest
 from app.schemas.response import CurrencyDataResponse
 from datetime import date
-import asyncio
 
 @pytest.mark.asyncio
 async def test_fetch_currency_data_success():

@@ -3,10 +3,8 @@
 import pytest
 from fastapi.testclient import TestClient
 from app.app import app
-from app.domain.services.nbp_service import CurrencyExchangeRateHistory, Statistics, TrendChangesHistogram, fetch_currency_data
-from app.schemas.response import CurrencyDataResponse
+from app.schemas.response import CurrencyDataResponse, Statistics, CurrencyExchangeRateHistory, TrendChangesHistogram
 from unittest.mock import AsyncMock, Mock, patch
-from datetime import date
 
 client = TestClient(app)
 
