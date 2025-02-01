@@ -48,6 +48,9 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
     if (typeof value === "number") {
       return value.toFixed(4);
     }
+    if (typeof value === "object" && value.length < 1) {
+      return "-";
+    }
     let str = "";
     value.forEach((val) => (str += " " + val.toFixed(4)));
     return str;
