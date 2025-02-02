@@ -98,7 +98,7 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
         <Card $gridColumn="2 / span 1" $gridRow="2 / span 1">
           <CardTitle>Coefficient of variation</CardTitle>
           <CardValue>
-            <span>{statistics.coeffOfVariation.toFixed(4)}%</span>
+            <span>{(statistics.coeffOfVariation * 100).toFixed(4)}%</span>
           </CardValue>
         </Card>
 
