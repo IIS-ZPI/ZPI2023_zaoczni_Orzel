@@ -129,7 +129,9 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
           $gridRow="1 / span 2"
           style={{ alignItems: "center" }}
         >
-          <CardTitle>Histogram of trend changes</CardTitle>
+          <CardTitle>
+            Histogram of trend changes {data.baseCurrency}/{data.quoteCurrency}
+          </CardTitle>
           <Histogram {...data.trendChangesHistogram} />
         </Card>
 
