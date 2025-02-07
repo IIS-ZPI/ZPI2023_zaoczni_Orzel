@@ -16,11 +16,7 @@ async def fetch_currency_data(request: CurrencyDataRequest) -> CurrencyDataRespo
     cutoff_date = datetime(2002, 1, 1).date()
 
     # Validate the request dates.
-    if request.endDate == cutoff_date:
-        error_msg = "Data for selected period is not available."
-        logger.error(error_msg)
-        raise ValueError(error_msg)
-    elif request.endDate > cutoff_date >= request.startDate:
+    if request.endDate >= cutoff_date >= request.startDate:
         error_msg = "No data available for given period because it includes dates before 02-01-2002."
         logger.error(error_msg)
         raise ValueError(error_msg)
