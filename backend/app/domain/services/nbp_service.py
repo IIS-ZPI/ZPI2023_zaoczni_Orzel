@@ -21,7 +21,7 @@ async def fetch_currency_data(request: CurrencyDataRequest) -> CurrencyDataRespo
         error_msg = "No overlapping dates allowed."
         logger.error(error_msg)
         raise ValueError(error_msg)
-    if request.endDate >= cutoff_date >= request.startDate:
+    if request.endDate < cutoff_date and request.startDate < cutoff_date:
         error_msg = "No data available for given period because it includes dates before 02-01-2002."
         logger.error(error_msg)
         raise ValueError(error_msg)
