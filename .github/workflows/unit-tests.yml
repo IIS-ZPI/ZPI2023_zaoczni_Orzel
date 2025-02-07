@@ -39,7 +39,7 @@ jobs:
       # Step 5: Display test results
       - name: Archive Test Results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pytest-results
           path: backend/.pytest_cache/
