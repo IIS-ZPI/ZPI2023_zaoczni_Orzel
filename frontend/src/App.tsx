@@ -24,6 +24,7 @@ function App() {
     }
     if (response.errorMsg) {
       setError(response.errorMsg);
+      setReportData(null);
     } else {
       setError("");
     }
