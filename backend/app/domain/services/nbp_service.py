@@ -12,10 +12,15 @@ from app.utils.helpers import calculate_statistics, generate_trend_changes_histo
 logger = logging.getLogger(__name__)
 
 async def fetch_currency_data(request: CurrencyDataRequest) -> CurrencyDataResponse:
+
     # Define the cutoff date: data is available only starting from 02-01-2002.
     cutoff_date = datetime(2002, 1, 1).date()
 
     # Validate the request dates.
+    if request.endDate == request.startDate:
+        error_msg = "No overlapping dates allowed."
+        logger.error(error_msg)
+        raise ValueError(error_msg)
     if request.endDate >= cutoff_date >= request.startDate:
         error_msg = "No data available for given period because it includes dates before 02-01-2002."
         logger.error(error_msg)
