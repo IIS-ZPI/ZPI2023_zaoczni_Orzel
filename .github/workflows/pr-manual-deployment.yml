@@ -32,11 +32,16 @@ jobs:
 
       - name: Deploy backend to Render
         run: |
-          curl -s -X POST \
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" -X POST \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
           -H "Content-Type: application/json" \
           -d '{"commitId": "${{ steps.pr_commit.outputs.commit_sha }}"}' \
-          https://api.render.com/v1/services/${{ secrets.RENDER_PR_ID }}/deploys
+          https://api.render.com/v1/services/${{ secrets.RENDER_PR_ID }}/deploys)
+
+          if [[ $RESPONSE -ne 201 ]]; then
+            echo "Backend deployment failed with status $RESPONSE"
+            exit 1
+          fi
 
   deploy-frontend:
     name: Deploy Pull Request Frontend

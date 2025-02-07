@@ -41,7 +41,7 @@ maxDate.setDate(new Date().getDate() - 1);
 
 type AnalysisFormProps = {
   onSubmit: (data: ReportConfig) => void;
-  onChange: () => void;
+  onChange: (error?: string) => void;
   isLoading: boolean;
 };
 
@@ -55,9 +55,11 @@ const AnalysisForm: React.FC<AnalysisFormProps> = ({
   const [currency1, setCurrency1] = useState<Currency>("EUR");
   const [currency2, setCurrency2] = useState<Currency | "">("");
   const [useSecondCurrency, setUseSecondCurrency] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(true);
 
   const isFormComplete = Boolean(
-    timeframe &&
+    !error &&
+      timeframe &&
       periodEnd &&
       currency1 &&
       (!useSecondCurrency || (useSecondCurrency && currency2))
@@ -72,8 +74,17 @@ const AnalysisForm: React.FC<AnalysisFormProps> = ({
     });
   };
 
-  const _onChange = () => {
-    onChange();
+  const _onChange = (newData?: any) => {
+    const newTimeframe = newData?.timeframe ? newData.timeframe : timeframe;
+    const newEndDate = newData?.periodEnd ? newData.periodEnd : periodEnd;
+
+    if (subDateDiff(newEndDate, newTimeframe) < minDate) {
+      setError(true);
+      onChange("No data available for the selected period");
+    } else {
+      setError(false);
+      onChange();
+    }
   };
 
   return (
@@ -84,7 +95,7 @@ const AnalysisForm: React.FC<AnalysisFormProps> = ({
         required
         onChange={(val) => {
           setTimeframe(val);
-          _onChange();
+          _onChange({ timeframe: val });
         }}
         placeholder="Choose timeframe"
         options={TIMEFRAME_OPTIONS}
@@ -94,7 +105,7 @@ const AnalysisForm: React.FC<AnalysisFormProps> = ({
         value={periodEnd}
         onChange={(val) => {
           setPeriodEnd(val);
-          _onChange();
+          _onChange({ periodEnd: val });
         }}
         minDate={minDate}
         maxDate={maxDate}
