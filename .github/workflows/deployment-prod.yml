@@ -6,6 +6,30 @@ on:
       - main
 
 jobs:
+  determine-version:
+    name: Determine Release Version
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.version.outputs.NEW_VERSION }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Determine Release Version
+        id: version
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "2.0.0")
+          MAJOR=$(echo $LATEST_TAG | cut -d. -f1)
+          MINOR=$(echo $LATEST_TAG | cut -d. -f2)
+          PATCH=$(echo $LATEST_TAG | cut -d. -f3)
+          NEW_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "::set-output name=NEW_VERSION::$NEW_VERSION"
+          echo "Next release version: $NEW_VERSION"
+
   build-backend:
     name: Build Backend
     runs-on: ubuntu-latest
@@ -25,20 +49,6 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install -r backend/requirements.txt
-
-  deploy-backend:
-    name: Deploy Backend to Render
-    needs: build-backend
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Trigger backend deployment
-        run: |
-          curl -s -X POST \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
-          -H "Content-Type: application/json" \
-              -d '{}' \
-              https://api.render.com/v1/services/${{ secrets.RENDER_PROD_ID }}/deploys
 
   build-frontend:
     name: Build Frontend
@@ -68,6 +78,25 @@ jobs:
           name: frontend-dist
           path: frontend/dist
 
+  deploy-backend:
+    name: Deploy Backend to Render
+    needs: build-backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger backend deployment
+        run: |
+          RESPONSE=$(curl -s -o response.json -w "%{http_code}" -X POST \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+              -d '{}' \
+              https://api.render.com/v1/services/${{ secrets.RENDER_PROD_ID }}/deploys)
+
+          if [[ $RESPONSE -ne 201 ]]; then
+            echo "Backend deployment failed with status $RESPONSE"
+            exit 1
+          fi
+
   deploy-frontend:
     name: Deploy Frontend to GitHub Pages
     needs: [build-frontend]
@@ -85,3 +114,28 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
           destination_dir: .
+
+  create-release:
+    name: Create GitHub Release
+    needs: [deploy-backend, deploy-frontend]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Create Git Tag
+        run: |
+          git tag "${{ needs.determine-version.outputs.new_version }}"
+          git push origin "${{ needs.determine-version.outputs.new_version }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "${{ needs.determine-version.outputs.new_version }}"
+          name: "Release ${{ needs.determine-version.outputs.new_version }}"
+          body: "🚀 New Release: ${{ needs.determine-version.outputs.new_version }}\n"
+          draft: false
+          prerelease: false
