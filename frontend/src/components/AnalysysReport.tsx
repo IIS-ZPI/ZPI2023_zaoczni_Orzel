@@ -31,12 +31,14 @@ const AnalysisReportWarning = styled.div`
 `;
 
 type AnalysisReportProps = {
+  error?: string;
   data: ReportData;
   isDataValid: boolean;
   isLoading: boolean;
 };
 
 const AnalysisReport: React.FC<AnalysisReportProps> = ({
+  error,
   data,
   isDataValid,
   isLoading,
@@ -68,7 +70,9 @@ const AnalysisReport: React.FC<AnalysisReportProps> = ({
     <Container style={{ position: "relative" }}>
       {!showReport && (
         <AnalysisReportWarning>
-          <AppTitle>{isLoading ? "Loading..." : "Run analysis again"}</AppTitle>
+          <AppTitle>
+            {isLoading ? "Loading..." : error ? error : "Run analysis again"}
+          </AppTitle>
         </AnalysisReportWarning>
       )}
       <AnalysysReportWrapper disabled={!showReport}>
