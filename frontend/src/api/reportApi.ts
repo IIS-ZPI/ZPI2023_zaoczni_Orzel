@@ -5,6 +5,10 @@ import { ApiResponse } from "./types";
 export const fetchReport = async (
   data: ReportConfig
 ): Promise<ApiResponse<ReportData>> => {
+  const startDate = new Date(data.startDate);
+  const endDate = new Date(data.endDate);
+  endDate.setMinutes(endDate.getMinutes() - endDate.getTimezoneOffset());
+  startDate.setMinutes(startDate.getMinutes() - startDate.getTimezoneOffset());
   try {
     const response = await api.post<ReportData>(`/currency/exchange-rate`, {
       baseCurrency: data.baseCurrency,
