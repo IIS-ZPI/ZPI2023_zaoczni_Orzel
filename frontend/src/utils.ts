@@ -1,4 +1,4 @@
-export const subDateDiff = (date: Date, diff: string) => {
+export const subDateDiff = (date: Date, diff: string): Date => {
   const newDate = new Date(date);
   switch (diff) {
     case "1W":
