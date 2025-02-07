@@ -31,7 +31,8 @@ function App() {
     setIsLoading(false);
   };
 
-  const onChange = () => {
+  const onChange = (error?: string) => {
+    setError(error || "");
     setIsDataValid(false);
   };
 
@@ -58,6 +59,7 @@ function App() {
       )}
       {reportData && (
         <AnalysisReport
+          error={error ? error : undefined}
           data={reportData}
           isDataValid={isDataValid}
           isLoading={isLoading}
