@@ -13,8 +13,8 @@ export const fetchReport = async (
     const response = await api.post<ReportData>(`/currency/exchange-rate`, {
       baseCurrency: data.baseCurrency,
       quoteCurrency: data.quoteCurrency,
-      startDate: data.startDate.toISOString().split("T")[0],
-      endDate: data.endDate.toISOString().split("T")[0],
+      startDate: startDate.toISOString().split("T")[0],
+      endDate: endDate.toISOString().split("T")[0],
     });
 
     if (response.status != 200) {
